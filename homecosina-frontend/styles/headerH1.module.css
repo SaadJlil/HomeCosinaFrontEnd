@@ -1,0 +1,22 @@
+.container {
+    position: relative;
+    width: 100%;
+}
+
+.container h1 {
+    position: relative;
+    width: 100%;
+    letter-spacing: -0.08em;
+    text-align: center;
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 30px;
+
+
+    font-family: 'Nunito', sans-serif !important;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 48px;
+    
+}
