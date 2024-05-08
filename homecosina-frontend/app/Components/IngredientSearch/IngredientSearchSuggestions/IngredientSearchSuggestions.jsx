@@ -11,31 +11,27 @@ import { useState, useEffect } from "react";
 
 
 
-
-
-async function getIngredients(IngredientSearchQuery)
+async function getIngredients(ingredientSearchQuery)
 {
     try{
-       
-        const data = await fetch('https://homecosina.com/graphql', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-            query: `query ingredientQuery($Query: String!, $page_nb: Int!, $row_nb: Int!) {
-                SearchIngredientsByQuery(Query: $Query, page_nb: $page_nb, row_nb: $row_nb){
-                ingredient_name
-                }
-            }`,
-            variables: {
-                Query: IngredientSearchQuery,
-                page_nb: 1,
-                row_nb: 10
-            },
-            })
-        });
 
+        const res = await fetch(
+            'http://localhost:3000/api',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({IngredientSearchQuery: ingredientSearchQuery})
+            }
+        )
+        
 
-        return (await data.json()).data.SearchIngredientsByQuery;
+        return {
+            ingredientN: (await res.json()).ingredientnames,
+            status: res.status
+        };
+        
     }
     catch(error){
         console.error('Failed to fetch:', error);
@@ -43,38 +39,65 @@ async function getIngredients(IngredientSearchQuery)
  
 }
 
-export default function IngredientSearchSuggestions({SearchBarPosition, ingredientSearchQuery}){//({handleCloseIngredientSearchSuggestions, isIngredientSearchIngredientsOpen, ingredientSearchQuery,ingredientSearchQuery }) {
 
-    //if(!isIngredientSearchIngredientsOpen) return null;
+
+
+export default function IngredientSearchSuggestions({handleIngredientSearchSuggestionsNoResults, handleIngredientSearchSuggestionsClose, isIngredientSearchIngredientsOpen, SearchBarPosition, ingredientSearchQuery}){//({handleCloseIngredientSearchSuggestions, isIngredientSearchIngredientsOpen, ingredientSearchQuery,ingredientSearchQuery }) {
+
+
+    if (isIngredientSearchIngredientsOpen !== "open") return null;
+
+    const handleMouseUpSuggestions = (e) => {
+        if (!document.getElementById('suggestionscontainer').contains(e.target)) {
+            handleIngredientSearchSuggestionsClose();
+
+            // Remove the event listener after it's executed once
+            document.removeEventListener('mouseup', handleMouseUpSuggestions, true);
+        }
+    };
+
+    useEffect(() => {
+        // Add the event listener to the document
+        document.addEventListener('mouseup', handleMouseUpSuggestions, true);
+
+        // Cleanup function to remove the event listener when component unmounts
+        return () => {
+            document.removeEventListener('mouseup', handleMouseUpSuggestions, true);
+        };
+    }, []); // Empty dependency array to run effect only once
 
 
     const [ingredientNames, setIngredientNames] = useState({});
 
     useEffect(() => {
-        async function asyncFetch() {
-          setIngredientNames(await getIngredients(ingredientSearchQuery));
-        };
-    
-        asyncFetch();
+        if(ingredientSearchQuery.length !== 0){
+
+            async function asyncFetch() {
+
+                const ingNames = (await getIngredients(ingredientSearchQuery)).ingredientN;
+
+                if (!ingNames || Object.keys(ingNames).length === 0){
+                    document.removeEventListener('mouseup', handleMouseUpSuggestions, true);
+                    handleIngredientSearchSuggestionsNoResults();
+                }else{
+                    setIngredientNames(ingNames);
+                }
+
+            }
+        
+            asyncFetch();
+
+            return () => {
+                document.removeEventListener('mouseup', handleMouseUpSuggestions, true);
+            };
+        }
       }, [ingredientSearchQuery]);
 
-    if (!ingredientNames || Object.keys(ingredientNames).length === 0) return null;
-
     return (
-        <div className={styles.container} style={{minWidth: `${SearchBarPosition.width}px`, top: `${SearchBarPosition.y+3}px`, left: `${SearchBarPosition.x}px`}}>
+        <div id="suggestionscontainer" className={styles.container} style={{minWidth: `${SearchBarPosition.width}px`, top: `${SearchBarPosition.y+3}px`, left: `${SearchBarPosition.x}px`}}>
             {
                 Object.entries(ingredientNames).map((value, index) => <IngredientSuggestionsElement key= {value[0]} ingredientName={value[1].ingredient_name} />)
             }
         </div>
     );
 }
-
-/*
-export default function AboutMeModal({handleCloseModal, isModalOpen}) {
-    return (
-        <modalform className={styles.modalform}>        
-            <AboutMe isOpen={isModalOpen} onClose={() => handleCloseModal()}/>
-        </modalform>
-   )
-}
-*/

@@ -3,8 +3,10 @@ import styles from "../../styles/main.module.css";
 import IngredientSearch from "../Components/IngredientSearch/IngredientSearch";
 
 export default function Main() {
+
+
   return (
-    <div className={styles.container}>
+    <div id="mainwindow" className={styles.container}>
       <IngredientSearch/>
     </div>
     
