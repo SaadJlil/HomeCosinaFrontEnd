@@ -1,0 +1,69 @@
+.container{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.element {
+    overflow: hidden;
+    width: 90%;
+    background-color: rgb(252, 252, 252);
+    box-shadow: 1px 3px 3px 0px rgba(73, 72, 72, 0.2);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.deleteWrapper {
+    width: 12%;
+    height: 100%;
+    padding-right: 2%;
+}
+
+.container img {
+    position: relative;
+    transform: translateY(-50%); /* Adjust vertically by -50% of its own height */
+    top: 50%;
+    max-width: 35px;
+    max-height: 35px;
+
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+}
+
+.ing_img {
+    box-shadow: 1px 3px 3px 0px rgba(73, 72, 72, 0.2);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 30%;
+    aspect-ratio: 1/1;
+}
+
+.inginfo_container {
+    padding-left: 7%;
+    width: 58%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inginfo_container h1 {
+    color: #4F505A;
+
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.inginfo_container h2 {
+    color: #636369;
+
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+}

@@ -16,7 +16,7 @@ async function getIngredients(ingredientSearchQuery)
     try{
 
         const res = await fetch(
-            'http://localhost:3000/api',
+            'http://localhost:3000/api/ingsuggestions',
             {
                 method: 'POST',
                 headers: {
@@ -42,29 +42,29 @@ async function getIngredients(ingredientSearchQuery)
 
 
 
-export default function IngredientSearchSuggestions({handleIngredientSearchSuggestionsNoResults, handleIngredientSearchSuggestionsClose, isIngredientSearchIngredientsOpen, SearchBarPosition, ingredientSearchQuery}){//({handleCloseIngredientSearchSuggestions, isIngredientSearchIngredientsOpen, ingredientSearchQuery,ingredientSearchQuery }) {
-
+export default function IngredientSearchSuggestions({DeleteIngredient, MyIngredients, IngredientSearchSuggestionsClose_handler, ingName, handleIngredientName, handleIngredientSearchSuggestionsNoResults, handleIngredientSearchSuggestionsClose, isIngredientSearchIngredientsOpen, SearchBarPosition, ingredientSearchQuery}){//({handleCloseIngredientSearchSuggestions, isIngredientSearchIngredientsOpen, ingredientSearchQuery,ingredientSearchQuery }) {
 
     if (isIngredientSearchIngredientsOpen !== "open") return null;
 
     const handleMouseUpSuggestions = (e) => {
-        if (!document.getElementById('suggestionscontainer').contains(e.target)) {
-            handleIngredientSearchSuggestionsClose();
-
-            // Remove the event listener after it's executed once
+        const suggestionsContainer = document.getElementById('suggestionscontainer');
+        
+        // Check if suggestionscontainer exists and contains the event target
+        if (!suggestionsContainer || !suggestionsContainer.contains(e.target)) {
             document.removeEventListener('mouseup', handleMouseUpSuggestions, true);
+            handleIngredientSearchSuggestionsClose();
         }
     };
 
+
+
     useEffect(() => {
-        // Add the event listener to the document
         document.addEventListener('mouseup', handleMouseUpSuggestions, true);
 
-        // Cleanup function to remove the event listener when component unmounts
         return () => {
             document.removeEventListener('mouseup', handleMouseUpSuggestions, true);
         };
-    }, []); // Empty dependency array to run effect only once
+    }, []);
 
 
     const [ingredientNames, setIngredientNames] = useState({});
@@ -87,16 +87,24 @@ export default function IngredientSearchSuggestions({handleIngredientSearchSugge
         
             asyncFetch();
 
-            return () => {
-                document.removeEventListener('mouseup', handleMouseUpSuggestions, true);
-            };
         }
+
       }, [ingredientSearchQuery]);
 
     return (
         <div id="suggestionscontainer" className={styles.container} style={{minWidth: `${SearchBarPosition.width}px`, top: `${SearchBarPosition.y+3}px`, left: `${SearchBarPosition.x}px`}}>
             {
-                Object.entries(ingredientNames).map((value, index) => <IngredientSuggestionsElement key= {value[0]} ingredientName={value[1].ingredient_name} />)
+                Object.entries(ingredientNames).map((value, index) => 
+                    <IngredientSuggestionsElement 
+                        handleIngredientName={handleIngredientName} 
+                        key= {value[0]} 
+                        ingredientName={value[1].ingredient_name} 
+                        IngredientSearchSuggestionsClose_handler={IngredientSearchSuggestionsClose_handler}
+                        ingName={ingName} 
+                        DeleteIngredient={DeleteIngredient}
+                        MyIngredients={MyIngredients}
+                    />
+                )
             }
         </div>
     );

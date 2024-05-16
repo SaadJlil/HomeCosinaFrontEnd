@@ -1,0 +1,42 @@
+.container {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+
+
+    border-color: grey;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+
+    font-family: 'Nunito', sans-serif !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    color: rgb(56, 56, 56) !important;
+
+    border-radius: 3px;
+}
+
+.add {
+    font-family: 'Nunito', sans-serif !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    font-size: 16px ;
+    color: rgb(94, 93, 93, 0.7) ;
+}
+
+.add:hover {
+    color: rgb(39, 167, 39);
+}
+
+.container:hover {
+    background-color: rgb(216, 216, 216);
+    cursor:pointer;
+}
