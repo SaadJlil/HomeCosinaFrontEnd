@@ -8,15 +8,15 @@ import { ImageConfigContext } from "next/dist/shared/lib/image-config-context.sh
 import { useState, useEffect } from "react";
 
 
-export default function RecipeList({RecipeInfoList}) {
-
-    console.log(RecipeInfoList);
+export default function RecipeList({recipeIdHandler, recipeInfoOpenHandler, RecipeInfoList}) {
 
     return (
         <div className={styles.container}> 
             {
                 RecipeInfoList.map((value, index) => 
                     <RecipeElement 
+                        recipeIdHandler={recipeIdHandler}
+                        recipeInfoOpenHandler={recipeInfoOpenHandler}
                         RecipeInfo={value} 
                     />
                 )

@@ -1,25 +1,31 @@
-.container{
+.container {
     width: 100%;
-    height: 100%;
-    background-color: rgb(222, 107, 71, 82%);
-    display:flex;
-    flex-direction: column;
+    display: flex;
+    justify-content: center;
 }
 
-.background {
-    /*
-    overflow-x:hidden;
-    */
-    overflow-x: visible;
-    overflow-y: auto;
-    position: fixed;
-    height: 100%; 
-    top: 0;
-    left: 0;
-    width:30%;
+.container table {
+    border-collapse: collapse;
+    border: 1px solid #676767;
+    width: 90%;
+    max-width: 400px;
+}
+  
+.container td {
+    border: 1px solid #676767;
 
-    background-image: url("../public/ingredientBackground.png");
-    background-size: cover;
+    padding: 3px;
+    width: 50%;
+    text-align: center;
+    color: white;
+}
+  
+.container td:nth-child(1) {
+    background-color: #FFA36F;
+}
+  
+.container td:nth-child(2) {
+    background-color: #E48668;
 }
 
 /*

@@ -12,7 +12,7 @@ import RecipeList from "./RecipeList/RecipeList";
 import { useState, useEffect, useRef } from "react";
 
 
-export default function RecipeSearch({}) {
+export default function RecipeSearch({recipeInfoOpenHandler, recipeIdHandler, MyIngredients}) {
 
     const [isRecipeSearchSuggestionsOpen_, setRecipeSearchOpen_] = useState("closed");
     const [recQuery, setRecQuery] = useState("");
@@ -74,11 +74,7 @@ export default function RecipeSearch({}) {
 
         async function asyncFetch() {
 
-            console.log(await searchRecipes(recQuery));
-
-            const recList = (await searchRecipes(recQuery)).SearchRecipesByQuery;
-
-            console.log(recList);
+            const recList = (await searchRecipes(recQuery, MyIngredients)).SearchRecipes;
 
             if(typeof(recList) !== "undefined") {
                 setRecList(Object.keys(recList).map((key) => recList[key]));
@@ -87,7 +83,7 @@ export default function RecipeSearch({}) {
         }
 
 
-        if(recQuery.length > 0){
+        if(recQuery.length > 0 || MyIngredients.length > 0){
             asyncFetch();
         }
 
@@ -109,6 +105,7 @@ export default function RecipeSearch({}) {
                     searchRef={searchRef} 
                     onPositionChange={handlePositionChange}
                     handleRecipeName={setRecQuery}
+                    handleCloseSuggestions={handleRecipeSearchSuggestionsClose_}
                 />
                 <RecipeSearchSuggestions
                     recName={recQuery}
@@ -119,8 +116,11 @@ export default function RecipeSearch({}) {
                     SearchBarPosition={searchBarPosition}
                     RecipeSearchQuery={RecipeSearchQuery}
                 />
-                <RecipeList RecipeInfoList={recList} />
-
+                <RecipeList 
+                    recipeInfoOpenHandler={recipeInfoOpenHandler} 
+                    recipeIdHandler={recipeIdHandler}
+                    RecipeInfoList={recList} 
+                />
             </div>
         </div>
     );
@@ -162,7 +162,7 @@ export default function RecipeSearch({}) {
 }
 
 
-async function searchRecipes(recQuery)
+async function searchRecipes(recQuery, Ingredients)
 {
     try{
         const res = await fetch(
@@ -172,7 +172,10 @@ async function searchRecipes(recQuery)
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({RecipeSearchQuery: recQuery})
+                body: JSON.stringify({
+                    RecipeSearchQuery: recQuery,
+                    MyIngredients: Ingredients
+                })
             }
         )
 

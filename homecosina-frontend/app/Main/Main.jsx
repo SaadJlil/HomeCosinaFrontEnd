@@ -5,6 +5,7 @@ import styles from "../../styles/main.module.css";
 import IngredientSearch from "../Components/IngredientSearch/IngredientSearch";
 import IngredientInfo from "../Components/IngredientInfo/IngredientInfo";
 import RecipeSearch from "../Components/RecipeSearch/RecipeSearch"; 
+import RecipeInfo from "../Components/RecipeSearch/RecipeInfo/RecipeInfo";
 
 import { useState, useEffect } from "react";
 
@@ -15,6 +16,10 @@ export default function Main() {
   const [IngredientName, setIngredientName] = useState("");
   const [IngredientInfoOpen, setIngredientInfoOpen] = useState(false);
   const [IngInfo, setIngInfo] = useState({});
+
+  const [RecipeId, setRecipeId] = useState("");
+  const [recInfo, setRecInfo] = useState({});
+  const [RecipeInfoOpen, setRecipeInfoOpen] = useState(false);
 
 
   useEffect(() => {
@@ -49,6 +54,15 @@ export default function Main() {
     setIngredientInfoOpen(false);
   }
 
+  const RecipeInfoOpen_handler = () => {
+    setRecipeInfoOpen(true);
+  }
+
+  const RecipeInfoClose_handler = () => {
+    setRecipeInfoOpen(false);
+  }
+
+
 
   useEffect(() => {
 
@@ -77,6 +91,27 @@ export default function Main() {
 
         }
   , [IngredientName]);
+  
+  useEffect(() => {
+
+            async function asyncFetch() {
+
+                if(RecipeId.length > 0){
+                    const recInfo = (await getRecInfo(RecipeId)).recInfo;
+
+                    if (typeof(recInfo) !== "undefined") {
+                        setRecInfo(recInfo)
+                    }
+                }
+
+            }
+
+            asyncFetch();
+
+        }
+  , [RecipeId]);
+
+
 
   return (
     <div id="mainwindow" className={styles.container}>
@@ -95,7 +130,17 @@ export default function Main() {
         IngredientInfoClose_handler={IngredientInfoClose_handler} 
         ingredientInfoOpen={IngredientInfoOpen}
       />
-      <RecipeSearch/>
+      <RecipeSearch 
+        recipeInfoOpenHandler={RecipeInfoOpen_handler} 
+        recipeIdHandler={setRecipeId}
+        MyIngredients={MyIngredients}
+      />
+      <RecipeInfo 
+        recipeInfoOpen={RecipeInfoOpen}
+        recInfo={recInfo}
+        RecipeInfoClose_handler={RecipeInfoClose_handler}
+      />
+
     </div>
   );
 
@@ -123,5 +168,27 @@ async function getIngInfo(IngName)
     catch(error){
         console.error('Failed to fetch:', error);
     }
- 
+}
+
+
+async function getRecInfo(recId)
+{
+    try{
+        const res = await fetch(
+            'http://localhost:3000/api/getrecinfo',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({recipeId: recId})
+            }
+        )
+
+        return await res.json();
+        
+    }
+    catch(error){
+        console.error('Failed to fetch:', error);
+    }
 }

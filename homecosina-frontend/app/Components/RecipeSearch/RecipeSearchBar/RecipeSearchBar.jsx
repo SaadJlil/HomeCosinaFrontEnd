@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 
 
 
-export default function RecipeSearchBar({recName, onPositionChange, searchRef, forwardRef, setRecipeSearchQuery, handleRecipeName}) {
+export default function RecipeSearchBar({handleCloseSuggestions, recName, onPositionChange, searchRef, forwardRef, setRecipeSearchQuery, handleRecipeName}) {
         
     if (typeof window !== 'undefined'){
         window.addEventListener('resize', () => {
@@ -24,7 +24,6 @@ export default function RecipeSearchBar({recName, onPositionChange, searchRef, f
   return (
     <div className={styles.container} >
         <div className={styles.bar} ref={forwardRef}>
-            <img src="searchIcon.png" />
             <input 
                 id="recipesearchbarinput"
                 onChange={(evt) => setRecipeSearchQuery(evt.currentTarget.value)} 
@@ -33,17 +32,32 @@ export default function RecipeSearchBar({recName, onPositionChange, searchRef, f
                 onKeyDown={event => {
                     if (event.key === 'Enter') {
                         const inputString = event.currentTarget.value;
-                        if(inputString.length > 0){
-                            if(inputString === recName){
-                                handleRecipeName((inputString === inputString.toLowerCase()) ? inputString.toUpperCase() : inputString.toLowerCase());
-                            }else{
-                                handleRecipeName(inputString);
-                            }
+                        if(inputString === recName){
+                            handleRecipeName((inputString === inputString.toLowerCase()) ? inputString.toUpperCase() : inputString.toLowerCase());
+                        }else{
+                            handleRecipeName(inputString);
                         }
+                        handleCloseSuggestions();
                     }
                 }}
             />
         </div>
+        <button onClick={() => 
+                {
+
+                    const inputString = document.getElementById("recipesearchbarinput").value;
+
+                    if(inputString === recName){
+                        handleRecipeName((inputString === inputString.toLowerCase()) ? inputString.toUpperCase() : inputString.toLowerCase());
+                    }else{
+                        handleRecipeName(inputString);
+                    }
+                }
+            }
+
+            className={styles.searchButton}>
+            <img src="searchIcon.png" />
+        </button>
     </div>
   );
 }

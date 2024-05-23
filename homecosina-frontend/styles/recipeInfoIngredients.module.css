@@ -1,0 +1,38 @@
+
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    width: 500px;
+    max-width: 100%;
+}
+
+.container h1 {
+    color: #303033;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+
+
+.ingredient {
+    color: #303033;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.measurement {
+    color: #303033;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.item {
+    padding-bottom: 10px;
+}
