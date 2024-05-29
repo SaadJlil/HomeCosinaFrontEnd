@@ -20,6 +20,7 @@ export default function Main() {
   const [RecipeId, setRecipeId] = useState("");
   const [recInfo, setRecInfo] = useState({});
   const [RecipeInfoOpen, setRecipeInfoOpen] = useState(false);
+  const [isRecipeInfoLoading, setRecipeInfoLoading] = useState(true);
 
 
   useEffect(() => {
@@ -97,10 +98,13 @@ export default function Main() {
             async function asyncFetch() {
 
                 if(RecipeId.length > 0){
+
+                    setRecipeInfoLoading(true);
                     const recInfo = (await getRecInfo(RecipeId)).recInfo;
 
                     if (typeof(recInfo) !== "undefined") {
                         setRecInfo(recInfo)
+                        setRecipeInfoLoading(false);
                     }
                 }
 
@@ -136,6 +140,7 @@ export default function Main() {
         MyIngredients={MyIngredients}
       />
       <RecipeInfo 
+        isLoading={isRecipeInfoLoading}
         recipeInfoOpen={RecipeInfoOpen}
         recInfo={recInfo}
         RecipeInfoClose_handler={RecipeInfoClose_handler}

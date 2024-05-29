@@ -5,7 +5,7 @@ export default function RecipeInfoHeader({recipeImageUrl, recipeTitle, recipeCoo
 
     return (
         <div className={styles.container}>
-                <div className={styles.rec_img} style={{backgroundImage: `url(${recipeImageUrl})`}}></div>
+                <div className={styles.rec_img} style={{backgroundImage: (recipeImageUrl === null) ? 'url("defaultRecipeImage.png")' : `url(${recipeImageUrl})`}}></div>
                 <div className={styles.rec_hinfo}>
                     <div className={styles.recinfoh}>
                         <h1>{recipeTitle}</h1>

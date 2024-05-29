@@ -15,7 +15,7 @@ export default function RecipeElement({recipeIdHandler, recipeInfoOpenHandler, R
                     recipeIdHandler(RecipeInfo.recipe_id);
                     recipeInfoOpenHandler();
                 }} className={styles.element}>
-                    <div className={styles.rec_img} style={{backgroundImage: `url(${RecipeInfo.recipe_imgurl})`}} />
+                    <div className={styles.rec_img} style={{backgroundImage: (RecipeInfo.recipe_imgurl === null) ? `url("defaultRecipeImage.png")` : `url(${RecipeInfo.recipe_imgurl})`}} />
                     <div className={styles.recinfo_container}>
                         <h1>{FirstCharacterUppercase(RecipeInfo.title)}</h1>
                     </div>

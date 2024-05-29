@@ -25,7 +25,7 @@ export default function IngredientInfo({DeleteIngredient, MyIngredients, AddIngr
         return (
             <div className={styles.container}>
                 <img onClick={IngredientInfoClose_handler} src="back_button.png"/>
-                <div className={styles.ing_img} style={{backgroundImage: `url(${IngInfo.ing_imageurl})`}}></div>
+                <div className={styles.ing_img} style={{backgroundImage: (IngInfo.ing_imageurl === null) ? 'url("defaultIngredientImage.jpg")' : `url(${IngInfo.ing_imageurl})`}}></div>
                 <div className={styles.inginfo_container}>
                     <h1>{FirstCharacterUppercase(IngInfo.ingredient_name)}</h1>
                     <h2 className={styles.h2}>{IngInfo.category}</h2>
@@ -41,7 +41,7 @@ export default function IngredientInfo({DeleteIngredient, MyIngredients, AddIngr
     return (
         <div className={styles.container}>
             <img onClick={IngredientInfoClose_handler} src="back_button.png"/>
-            <div className={styles.ing_img} style={{backgroundImage: `url(${IngInfo.ing_imageurl})`}}></div>
+            <div className={styles.ing_img} style={{backgroundImage: (IngInfo.ing_imageurl === null) ? 'url("defaultIngredientImage.jpg")' : `url(${IngInfo.ing_imageurl})`}}></div>
             <div className={styles.inginfo_container}>
                 <h1>{FirstCharacterUppercase(IngInfo.ingredient_name)}</h1>
                 <h2 className={styles.h2}>{IngInfo.category}</h2>

@@ -17,6 +17,8 @@ export default function RecipeSearch({recipeInfoOpenHandler, recipeIdHandler, My
     const [isRecipeSearchSuggestionsOpen_, setRecipeSearchOpen_] = useState("closed");
     const [recQuery, setRecQuery] = useState("");
     const [recList, setRecList] = useState([]);
+    const [isListLoading, setListLoading] = useState(false);
+
 
     const handleRecipeSearchSuggestionsOpen_ = () => {
         setRecipeSearchOpen_("open");
@@ -74,10 +76,12 @@ export default function RecipeSearch({recipeInfoOpenHandler, recipeIdHandler, My
 
         async function asyncFetch() {
 
-            const recList = (await searchRecipes(recQuery, MyIngredients)).SearchRecipes;
+            setListLoading(true);
+            const recList = (await searchRecipes((recQuery === "*") ? "" : recQuery, MyIngredients)).SearchRecipes;
 
             if(typeof(recList) !== "undefined") {
                 setRecList(Object.keys(recList).map((key) => recList[key]));
+                setListLoading(false);
             }
 
         }
@@ -117,6 +121,7 @@ export default function RecipeSearch({recipeInfoOpenHandler, recipeIdHandler, My
                     RecipeSearchQuery={RecipeSearchQuery}
                 />
                 <RecipeList 
+                    isLoading={isListLoading}
                     recipeInfoOpenHandler={recipeInfoOpenHandler} 
                     recipeIdHandler={recipeIdHandler}
                     RecipeInfoList={recList} 

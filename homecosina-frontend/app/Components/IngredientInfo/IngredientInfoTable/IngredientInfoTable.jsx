@@ -24,7 +24,7 @@ export default function IngredientInfoTable({IngredientInfo}) {
                         mainKeys.map((value, index) => 
                             <tr key={index}>
                                 <td>{value.presString}</td>
-                                <td>{`${IngredientInfo[value.k]} ${value.unit}`}</td>
+                                <td>{`${IngredientInfo[value.k].toFixed(1)} ${value.unit}`}</td>
                             </tr>
                         )
                     }

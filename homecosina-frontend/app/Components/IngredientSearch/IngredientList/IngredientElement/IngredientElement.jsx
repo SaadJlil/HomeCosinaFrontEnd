@@ -12,7 +12,7 @@ export default function IngredientElement({DeleteIngredient, IngredientInfo}) {
         return (
             <div className={styles.container}> 
                 <div className={styles.element}>
-                    <div className={styles.ing_img} style={{backgroundImage: `url(${IngredientInfo.ing_imageurl})`}} />
+                    <div className={styles.ing_img} style={{backgroundImage: (IngredientInfo.ing_imageurl === null) ? 'url("defaultIngredientImage.jpg")' : `url(${IngredientInfo.ing_imageurl})`}} />
                     <div className={styles.inginfo_container}>
                         <h1>{FirstCharacterUppercase(IngredientInfo.ingredient_name)}</h1>
                         <h2>{IngredientInfo.category}</h2>

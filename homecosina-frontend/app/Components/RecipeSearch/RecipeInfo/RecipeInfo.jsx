@@ -6,23 +6,33 @@ import RecipeInfoTable from "./RecipeInfoTable/RecipeInfoTable";
 import RecipeInfoHeader from "./RecipeInfoHeader/RecipeInfoHeader";
 import RecipeInfoIngredients from "../RecipeInfoIngredients/RecipeInfoIngredients";
 import RecipeInfoSteps from "../RecipeInfoSteps/RecipeInfoSteps";
-
-
-
 import { useState, useEffect, useRef } from "react";
 import { Elsie_Swash_Caps, Indie_Flower } from "next/font/google";
+import { ring } from 'ldrs'
+
+ring.register('my-precious');
 
 
 
 
 
-
-
-export default function RecipeInfo({recipeInfoOpen, recInfo, RecipeInfoClose_handler}) {
+export default function RecipeInfo({isLoading, recipeInfoOpen, recInfo, RecipeInfoClose_handler}) {
 
     if(!recipeInfoOpen || Object.keys(recInfo).length === 0) return null;
 
-    console.log(recInfo);
+    if(isLoading) {
+        return (
+            <div className={styles.containerLoading} >
+                <img onClick={RecipeInfoClose_handler} src="back_button.png"/>
+                
+                <my-precious size="80" color="orange"></my-precious>
+
+            </div>
+        );
+
+    }
+
+
 
     return (
         <div className={styles.container} >
