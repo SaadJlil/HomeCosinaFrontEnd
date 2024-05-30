@@ -90,6 +90,10 @@ export default function RecipeSearchSuggestions({recName, handleRecipeName, hand
 
       }, [RecipeSearchQuery]);
 
+    if(Object.entries(RecipeNames).length === 0) {
+        return null;
+    }
+
     return (
         <div id="recipesuggestionscontainer" className={styles.container} style={{minWidth: `${SearchBarPosition.width}px`, top: `${SearchBarPosition.y+3}px`, left: `${SearchBarPosition.x}px`}}>
             {

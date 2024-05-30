@@ -91,6 +91,11 @@ export default function IngredientSearchSuggestions({DeleteIngredient, MyIngredi
 
       }, [ingredientSearchQuery]);
 
+
+    if(Object.entries(ingredientNames).length === 0) {
+        return null;
+    }
+
     return (
         <div id="suggestionscontainer" className={styles.container} style={{minWidth: `${SearchBarPosition.width}px`, top: `${SearchBarPosition.y+3}px`, left: `${SearchBarPosition.x}px`}}>
             {
