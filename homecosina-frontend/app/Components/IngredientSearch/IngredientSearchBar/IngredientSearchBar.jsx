@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import styles from "../../../../styles/ingredientSearchBar.module.css";
 
 export default function IngredientSearchBar({
@@ -33,13 +33,37 @@ export default function IngredientSearchBar({
     };
   }, [forwardRef, onPositionChange]);
 
+
+   const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedSetIngredientSearchQuery = useCallback(
+    debounce((value) => setIngredientSearchQuery(value), 750),
+    []
+  );
+
+
   return (
     <div className={styles.container}>
       <div className={styles.bar} ref={forwardRef}>
         <img src="searchIcon.png" alt="Search" />
         <input
           id="ingredientsearchbarinput"
-          onChange={(evt) => setIngredientSearchQuery(evt.currentTarget.value)}
+          onChange={(evt) => {
+            if(evt.currentTarget.value !== "") {
+                debouncedSetIngredientSearchQuery(evt.currentTarget.value);
+            }
+            else {
+                setIngredientSearchQuery("");
+            }
+          }}
           type="text"
           placeholder="Search for Ingredients..."
           onKeyDown={(event) => {
